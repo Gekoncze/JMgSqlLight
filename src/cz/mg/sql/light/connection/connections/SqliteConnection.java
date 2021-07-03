@@ -112,7 +112,7 @@ public class SqliteConnection implements SqlConnection {
 
     private PreparedStatement createStatement(Sql sql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(sql.getText());
-        int i = 0;
+        int i = 1;
         for(SqlBind bind : sql.getBinds()){
             statement.setObject(i, bind.getObject());
             i++;
