@@ -20,6 +20,7 @@ public class SqlTable {
     private final SqlTemplate readRowSql;
     private final SqlTemplate updateRowSql;
     private final SqlTemplate deleteRowSql;
+    private final SqlTemplate rowCountSql;
 
     public SqlTable(String name, SqlColumn[] identityColumns, SqlColumn[] valueColumns) {
         validateName(name);
@@ -61,6 +62,11 @@ public class SqlTable {
         this.deleteRowSql = new SqlBuilder()
             .deleteRow(name)
             .conditions(identityColumns, SqlColumn::getName)
+            .build();
+
+        this.rowCountSql = new SqlBuilder()
+            .readRow(name)
+            .column("count(*)")
             .build();
     }
 
@@ -163,5 +169,10 @@ public class SqlTable {
         if(values.length != valueColumns.count()){
             throw new IllegalArgumentException("Value count mismatch. Expected " + valueColumns.count() + ", got " + values.length + ".");
         }
+    }
+
+    public int rowCount(SqlConnection connection){
+        Sql sql = rowCountSql.copy();
+        return (int) connection.executeQuery(sql).getSingleResult().get(0);
     }
 }
