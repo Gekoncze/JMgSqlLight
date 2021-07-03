@@ -3,7 +3,6 @@ package cz.mg.sql.light.builder.row;
 import cz.mg.collections.list.List;
 import cz.mg.sql.light.Sql;
 import cz.mg.sql.light.SqlBind;
-import cz.mg.sql.light.builder.ColumnConverter;
 import cz.mg.sql.light.builder.SqlBuilderInterface;
 
 import static cz.mg.sql.light.SqlValidator.validateName;
@@ -33,17 +32,17 @@ public class SqlReadRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
-    public <T> SqlReadRowBuilder columns(T[] columns, ColumnConverter<T> converter){
-        for(T column : columns){
-            column(converter.convert(column));
-        }
-        return this;
-    }
-
     public SqlReadRowBuilder condition(String column){
         validateName(column);
         conditions.addLast(column);
         binds.addLast(new SqlBind(column));
+        return this;
+    }
+
+    public SqlReadRowBuilder condition(String column, Object bind){
+        validateName(column);
+        conditions.addLast(column);
+        binds.addLast(new SqlBind(column, bind));
         return this;
     }
 
@@ -54,9 +53,9 @@ public class SqlReadRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
-    public <T> SqlReadRowBuilder conditions(T[] columns, ColumnConverter<T> converter){
-        for(T column : columns){
-            condition(converter.convert(column));
+    public SqlReadRowBuilder conditions(String[] columns, Object[] binds){
+        for(int i = 0; i < columns.length; i++){
+            condition(columns[i], binds[i]);
         }
         return this;
     }

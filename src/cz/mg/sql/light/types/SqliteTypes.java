@@ -1,4 +1,4 @@
-package cz.mg.sql.light.entities.types;
+package cz.mg.sql.light.types;
 
 public class SqliteTypes {
     public static final String TEXT = "TEXT";

@@ -3,7 +3,6 @@ package cz.mg.sql.light.builder.row;
 import cz.mg.collections.list.List;
 import cz.mg.sql.light.Sql;
 import cz.mg.sql.light.SqlBind;
-import cz.mg.sql.light.builder.ColumnConverter;
 import cz.mg.sql.light.builder.SqlBuilderInterface;
 
 import static cz.mg.sql.light.SqlValidator.validateName;
@@ -27,6 +26,13 @@ public class SqlUpdateRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
+    public SqlUpdateRowBuilder column(String column, Object bind){
+        validateName(column);
+        columns.addLast(column);
+        binds.addLast(new SqlBind(column, bind));
+        return this;
+    }
+
     public SqlUpdateRowBuilder columns(String[] columns){
         for(String column : columns){
             column(column);
@@ -34,9 +40,9 @@ public class SqlUpdateRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
-    public <T> SqlUpdateRowBuilder columns(T[] columns, ColumnConverter<T> converter){
-        for(T column : columns){
-            column(converter.convert(column));
+    public SqlUpdateRowBuilder columns(String[] columns, Object[] binds){
+        for(int i = 0; i < columns.length; i++){
+            column(columns[i], binds[i]);
         }
         return this;
     }
@@ -48,16 +54,23 @@ public class SqlUpdateRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
-    public SqlUpdateRowBuilder conditions(String... columns){
+    public SqlUpdateRowBuilder condition(String column, Object bind){
+        validateName(column);
+        conditions.addLast(column);
+        binds.addLast(new SqlBind(column, bind));
+        return this;
+    }
+
+    public SqlUpdateRowBuilder conditions(String[] columns){
         for(String column : columns){
             condition(column);
         }
         return this;
     }
 
-    public <T> SqlUpdateRowBuilder conditions(T[] columns, ColumnConverter<T> converter){
-        for(T column : columns){
-            condition(converter.convert(column));
+    public SqlUpdateRowBuilder conditions(String[] columns, Object[] binds){
+        for(int i = 0; i < columns.length; i++){
+            condition(columns[i], binds[i]);
         }
         return this;
     }

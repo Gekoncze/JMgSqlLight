@@ -3,7 +3,6 @@ package cz.mg.sql.light.builder.row;
 import cz.mg.collections.list.List;
 import cz.mg.sql.light.Sql;
 import cz.mg.sql.light.SqlBind;
-import cz.mg.sql.light.builder.ColumnConverter;
 import cz.mg.sql.light.builder.SqlBuilderInterface;
 
 import static cz.mg.sql.light.SqlValidator.validateName;
@@ -26,6 +25,13 @@ public class SqlCreateRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
+    public SqlCreateRowBuilder column(String column, Object bind){
+        validateName(column);
+        columns.addLast(column);
+        binds.addLast(new SqlBind(column, bind));
+        return this;
+    }
+
     public SqlCreateRowBuilder columns(String[] columns){
         for(String column : columns){
             column(column);
@@ -33,9 +39,9 @@ public class SqlCreateRowBuilder implements SqlBuilderInterface {
         return this;
     }
 
-    public <T> SqlCreateRowBuilder columns(T[] columns, ColumnConverter<T> converter){
-        for(T column : columns){
-            column(converter.convert(column));
+    public SqlCreateRowBuilder columns(String[] columns, Object[] binds){
+        for(int i = 0; i < columns.length; i++){
+            column(columns[i], binds[i]);
         }
         return this;
     }
