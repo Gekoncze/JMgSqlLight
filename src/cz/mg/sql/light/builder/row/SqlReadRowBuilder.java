@@ -63,8 +63,11 @@ public class SqlReadRowBuilder implements SqlBuilderInterface {
     @Override
     public Sql build() {
         String columnsText = columns.toText().delim(", ").build().toString();
-        String conditionsText = conditions.toText().delim(" AND ").convert(condition -> condition + " = ?").build().toString();
-        String text = "SELECT " + columnsText + " FROM " + tableName + " WHERE " + conditionsText;
+        String text = "SELECT " + columnsText + " FROM " + tableName;
+        if(!conditions.isEmpty()){
+            String conditionsText = conditions.toText().delim(" AND ").convert(condition -> condition + " = ?").build().toString();
+            text += " WHERE " + conditionsText;
+        }
         return new Sql(text, binds);
     }
 }

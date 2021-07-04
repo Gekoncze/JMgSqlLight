@@ -78,8 +78,11 @@ public class SqlUpdateRowBuilder implements SqlBuilderInterface {
     @Override
     public Sql build() {
         String columnsText = columns.toText().delim(", ").convert(column -> column + " = ?").build().toString();
-        String conditionsText = conditions.toText().delim(" AND ").convert(condition -> condition + " = ?").build().toString();
-        String text = "UPDATE " + tableName + " SET " + columnsText + " WHERE " + conditionsText;
+        String text = "UPDATE " + tableName + " SET " + columnsText;
+        if(!conditions.isEmpty()){
+            String conditionsText = conditions.toText().delim(" AND ").convert(condition -> condition + " = ?").build().toString();
+            text += " WHERE " + conditionsText;
+        }
         return new Sql(text, binds);
     }
 }

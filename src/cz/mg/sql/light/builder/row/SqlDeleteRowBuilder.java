@@ -48,8 +48,11 @@ public class SqlDeleteRowBuilder implements SqlBuilderInterface {
 
     @Override
     public Sql build() {
-        String conditionsText = conditions.toText().delim(" AND ").build().toString();
-        String text = "DELETE " + tableName + " WHERE " + conditionsText;
+        String text = "DELETE " + tableName;
+        if(!conditions.isEmpty()){
+            String conditionsText = conditions.toText().delim(" AND ").build().toString();
+            text += " WHERE " + conditionsText;
+        }
         return new Sql(text, binds);
     }
 }

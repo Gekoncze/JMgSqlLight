@@ -41,12 +41,12 @@ public class SqlResults {
         Map<String, Object> nameMap = new Map<>();
         Map<Integer, Object> indexMap = new Map<>();
 
-        for(int c = 0; c < columnCount; c++){
+        for(int c = 1; c <= columnCount; c++){
             String columnName = metaData.getColumnName(c);
             Object value = resultSet.getObject(c);
             if(resultSet.wasNull()) value = null;
             nameMap.set(columnName, value);
-            indexMap.set(c, value);
+            indexMap.set(c - 1, value);
         }
 
         return new SqlResult(nameMap, indexMap);

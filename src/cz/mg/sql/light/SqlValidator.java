@@ -65,6 +65,6 @@ public class SqlValidator {
     }
 
     private static boolean isAllowedSpecial(char ch){
-        return ch == '_';
+        return ch == '_' || ch == '(' || ch == ')' || ch == '*';
     }
 }

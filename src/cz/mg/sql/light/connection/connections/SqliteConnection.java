@@ -86,7 +86,7 @@ public class SqliteConnection implements SqlConnection {
         try (PreparedStatement statement = createStatement(sql)) {
             statement.execute();
         } catch (SQLException e) {
-            throw new SqlConnectionException(e);
+            throw new SqlConnectionException(e, createSqlDump(sql));
         }
     }
 
@@ -96,7 +96,7 @@ public class SqliteConnection implements SqlConnection {
         try (PreparedStatement statement = createStatement(sql)) {
             statement.execute();
         } catch (SQLException e) {
-            throw new SqlConnectionException(e);
+            throw new SqlConnectionException(e, createSqlDump(sql));
         }
     }
 
@@ -106,7 +106,7 @@ public class SqliteConnection implements SqlConnection {
         try (PreparedStatement statement = createStatement(sql)) {
             return SqlResults.toResults(statement.executeQuery());
         } catch (SQLException e) {
-            throw new SqlConnectionException(e);
+            throw new SqlConnectionException(e, createSqlDump(sql));
         }
     }
 
@@ -122,5 +122,14 @@ public class SqliteConnection implements SqlConnection {
 
     private void assertConnected(){
         if(!isConnected()) throw new SqlConnectionException("Disconnected.");
+    }
+
+    private String createSqlDump(Sql sql){
+        StringBuilder dump = new StringBuilder(sql.getText());
+        dump.append("\n");
+        for(SqlBind bind : sql.getBinds()){
+            dump.append("-- " + SqlBind.class.getSimpleName() + "('" + bind.getId() + "', '" + bind.getObject() + "')\n");
+        }
+        return dump.toString();
     }
 }
