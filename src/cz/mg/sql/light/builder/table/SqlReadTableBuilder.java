@@ -1,5 +1,7 @@
 package cz.mg.sql.light.builder.table;
 
+import cz.mg.annotations.requirement.Optional;
+import cz.mg.annotations.storage.Part;
 import cz.mg.collections.list.List;
 import cz.mg.sql.light.Sql;
 import cz.mg.sql.light.SqlBind;
@@ -9,7 +11,7 @@ import static cz.mg.sql.light.SqlValidator.validateName;
 
 
 public class SqlReadTableBuilder implements SqlBuilderInterface {
-    private final String tableName;
+    private final @Optional @Part String tableName;
 
     public SqlReadTableBuilder(String tableName) {
         validateName(tableName);

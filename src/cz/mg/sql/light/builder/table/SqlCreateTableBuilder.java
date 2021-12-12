@@ -1,39 +1,33 @@
 package cz.mg.sql.light.builder.table;
 
+import cz.mg.annotations.requirement.Mandatory;
+import cz.mg.annotations.requirement.Optional;
+import cz.mg.annotations.storage.Part;
 import cz.mg.collections.list.List;
 import cz.mg.sql.light.Sql;
 import cz.mg.sql.light.builder.SqlBuilderInterface;
-import cz.mg.sql.light.builder.TableColumnConverter;
 
 import static cz.mg.sql.light.SqlValidator.validateName;
 
 
 public class SqlCreateTableBuilder implements SqlBuilderInterface {
-    private final String tableName;
-    private final List<String> columns = new List<>();
+    private final @Optional @Part String tableName;
+    private final @Mandatory @Part List<String> columns = new List<>();
 
-    public SqlCreateTableBuilder(String tableName) {
+    public SqlCreateTableBuilder(@Mandatory String tableName) {
         validateName(tableName);
         this.tableName = tableName;
     }
 
-    public SqlCreateTableBuilder column(String column, String datatype){
-        validateName(column);
+    public SqlCreateTableBuilder column(@Mandatory String columnName, @Mandatory String datatype){
+        validateName(columnName);
         validateName(datatype);
-        columns.addLast(column + " " + datatype);
-        return this;
-    }
-
-    public <T> SqlCreateTableBuilder columns(T[] columns, TableColumnConverter<T> converter){
-        for(T column : columns){
-            String[] variable = converter.convert(column);
-            column(variable[0], variable[1]);
-        }
+        columns.addLast(columnName + " " + datatype);
         return this;
     }
 
     @Override
-    public Sql build() {
+    public @Mandatory Sql build() {
         String columnsText = columns.toText().delim(", ").build().toString();
         String text = "CREATE TABLE " + tableName + " ( " + columnsText + " ) ";
         return new Sql(text);

@@ -1,5 +1,6 @@
 package cz.mg.sql.light.connection;
 
+import cz.mg.annotations.requirement.Mandatory;
 import cz.mg.collections.list.List;
 import cz.mg.collections.map.Map;
 
@@ -9,22 +10,22 @@ import java.sql.SQLException;
 
 
 public class SqlResults {
-    private final List<SqlResult> results;
+    private final @Mandatory List<SqlResult> results;
 
-    public SqlResults(List<SqlResult> results) {
+    public SqlResults(@Mandatory List<SqlResult> results) {
         this.results = results;
     }
 
-    public List<SqlResult> getResults() {
+    public @Mandatory List<SqlResult> getResults() {
         return results;
     }
 
-    public SqlResult getSingleResult(){
+    public @Mandatory SqlResult getSingleResult(){
         if(results.count() != 1) throw new IllegalStateException("Expected 1 row, but got " + results.count() + " rows.");
         return results.getFirst();
     }
 
-    public static SqlResults toResults(ResultSet resultSet) throws SQLException {
+    public static @Mandatory SqlResults toResults(@Mandatory ResultSet resultSet) throws SQLException {
         List<SqlResult> results = new List<>();
 
         while(resultSet.next()){
@@ -34,7 +35,7 @@ public class SqlResults {
         return new SqlResults(results);
     }
 
-    private static SqlResult toResult(ResultSet resultSet) throws SQLException {
+    private static @Mandatory SqlResult toResult(@Mandatory ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
         int columnCount = metaData.getColumnCount();
 
