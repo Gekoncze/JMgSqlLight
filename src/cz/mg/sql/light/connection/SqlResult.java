@@ -7,6 +7,8 @@ import cz.mg.annotations.storage.Shared;
 import cz.mg.annotations.storage.Value;
 import cz.mg.collections.map.Map;
 
+import java.util.Objects;
+
 
 public class SqlResult {
     private final @Mandatory @Part Map<@Value String, @Shared Object> nameMap;
@@ -71,6 +73,90 @@ public class SqlResult {
 
     public @Optional Boolean getBoolean(int i){
         return (Boolean) indexMap.get(i);
+    }
+
+    public @Mandatory Object getMandatory(String name){
+        return Objects.requireNonNull(
+            nameMap.get(name)
+        );
+    }
+
+    public @Mandatory Object getMandatory(int i){
+        return Objects.requireNonNull(
+            indexMap.get(i)
+        );
+    }
+
+    public @Mandatory Integer getIntegerMandatory(String name){
+        return Objects.requireNonNull(
+            (Integer) nameMap.get(name)
+        );
+    }
+
+    public @Mandatory Integer getIntegerMandatory(int i){
+        return Objects.requireNonNull(
+            (Integer) indexMap.get(i)
+        );
+    }
+
+    public @Mandatory Long getLongMandatory(String name){
+        return Objects.requireNonNull(
+            (Long) nameMap.get(name)
+        );
+    }
+
+    public @Mandatory Long getLongMandatory(int i){
+        return Objects.requireNonNull(
+            (Long) indexMap.get(i)
+        );
+    }
+
+    public @Mandatory Float getFloatMandatory(String name){
+        return Objects.requireNonNull(
+            (Float) nameMap.get(name)
+        );
+    }
+
+    public @Mandatory Float getFloatMandatory(int i){
+        return Objects.requireNonNull(
+            (Float) indexMap.get(i)
+        );
+    }
+
+    public @Mandatory Double getDoubleMandatory(String name){
+        return Objects.requireNonNull(
+            (Double) nameMap.get(name)
+        );
+    }
+
+    public @Mandatory Double getDoubleMandatory(int i){
+        return Objects.requireNonNull(
+            (Double) indexMap.get(i)
+        );
+    }
+
+    public @Mandatory String getStringMandatory(String name){
+        return Objects.requireNonNull(
+            (String) nameMap.get(name)
+        );
+    }
+
+    public @Mandatory String getStringMandatory(int i){
+        return Objects.requireNonNull(
+            (String) indexMap.get(i)
+        );
+    }
+
+    public @Mandatory Boolean getBooleanMandatory(String name){
+        return Objects.requireNonNull(
+            (Boolean) nameMap.get(name)
+        );
+    }
+
+    public @Mandatory Boolean getBooleanMandatory(int i){
+        return Objects.requireNonNull(
+            (Boolean) indexMap.get(i)
+        );
     }
 
     public @Mandatory Object[] get(){
